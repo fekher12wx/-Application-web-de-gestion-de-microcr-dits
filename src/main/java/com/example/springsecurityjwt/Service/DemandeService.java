@@ -11,7 +11,7 @@ import java.util.Optional;
 public class DemandeService {
     @Autowired
     private DemandeRepository demandeRepository;
-    public Optional<Demande> findByName(String name) {
-        return demandeRepository.findByName(name);
+    public Optional<Demande> getType(String type) {
+        return getType(type);
     }
 }
