@@ -50,6 +50,7 @@ public class AuthController {
     RefreshTokenService refreshTokenService;
 
     @PostMapping(value = "/signup" , produces = MediaType.APPLICATION_JSON_VALUE)
+
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity.badRequest()
@@ -81,7 +82,7 @@ public class AuthController {
                         roles.add(adminRole);
 
                         break;
-                    case "EMPLOYE":
+                    case "EMPLOYE"  :
                         Role modRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);

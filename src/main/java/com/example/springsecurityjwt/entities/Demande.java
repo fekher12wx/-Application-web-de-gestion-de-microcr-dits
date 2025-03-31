@@ -11,20 +11,12 @@ public class Demande {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(nullable = false)
-    private String name;
-    private String Type;
-    private String Adresse;
-    private String Besoin;
+    private String type;  // ✅ Correct field name
+
+    private String besoin;  // ✅ Follow Java naming conventions (lowercase)
     private Number montant;
-    private Number montant_garant;
-    private String garant;
-    private String civilite;
-    private String revenu;
-    private String credit;
-    private String doc;
-    private String etat;
-    private String Raison;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -33,11 +25,13 @@ public class Demande {
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
+
+    // ✅ Correct Getter & Setter
     public String getType() {
-        return Type;
+        return type;
     }
 
     public void setType(String type) {
-        this.Type = type;
+        this.type = type;
     }
 }
