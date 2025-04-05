@@ -19,7 +19,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
@@ -28,9 +27,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class); // Changed to AuthTokenFilter
 
-    // List of public endpoints that don't require authentication
     private final List<String> publicEndpoints = Arrays.asList(
             "/api/auth/signup",
             "/api/auth/signin",
@@ -41,14 +39,15 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        // Skip filter for public endpoints
         return publicEndpoints.stream().anyMatch(path::startsWith);
     }
 
-    @SneakyThrows
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws SecurityException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
+            throws jakarta.servlet.ServletException, IOException {  // Added ServletException
+
         try {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateToken(jwt)) {
@@ -61,7 +60,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             }
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e.getMessage());
+            // Consider sending an error response for invalid tokens:
+            // response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
         }
+
         filterChain.doFilter(request, response);
     }
 
