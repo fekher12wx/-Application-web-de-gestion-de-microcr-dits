@@ -15,9 +15,18 @@ import java.util.Set;
 				@UniqueConstraint(columnNames = "username"),
 				@UniqueConstraint(columnNames = "email")
 		})
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.TABLE,
+			generator = "user_id_generator")
+	@TableGenerator(name = "user_id_generator",
+			table = "id_generator",
+			pkColumnName = "gen_name",
+			valueColumnName = "gen_value",
+			pkColumnValue = "user_id",
+			initialValue = 1000,
+			allocationSize = 50)
 	private Long id;
 
 	@NotBlank

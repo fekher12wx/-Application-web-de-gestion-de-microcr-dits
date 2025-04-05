@@ -1,5 +1,6 @@
 package com.example.springsecurityjwt.Request;
-
+import com.example.springsecurityjwt.Request.LoginRequest;
+import com.example.springsecurityjwt.Request.SignupRequest;
 import com.example.springsecurityjwt.JWT.JwtUtils;
 import com.example.springsecurityjwt.Models.RefreshToken;
 import com.example.springsecurityjwt.Repository.RoleRepository;
