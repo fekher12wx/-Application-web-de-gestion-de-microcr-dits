@@ -54,6 +54,7 @@ public class UserDetailsImpl implements UserDetails {
 		return email;
 	}
 
+
 	@Override
 	public String getPassword() {
 		return password;
@@ -93,4 +94,5 @@ public class UserDetailsImpl implements UserDetails {
 		UserDetailsImpl user = (UserDetailsImpl) o;
 		return Objects.equals(id, user.id);
 	}
+
 }
