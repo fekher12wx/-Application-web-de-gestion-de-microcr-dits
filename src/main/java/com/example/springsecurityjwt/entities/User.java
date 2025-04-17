@@ -4,19 +4,22 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
-
 
 @Entity
 @Table(name = "users",
 		uniqueConstraints = {
 				@UniqueConstraint(columnNames = "username"),
 				@UniqueConstraint(columnNames = "email")
-		})
+		}
+)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE,
 			generator = "user_id_generator")
@@ -49,9 +52,10 @@ public class User {
 	private Set<Role> roles = new HashSet<>();
 
 	public User() {
-		// Default role CLIENT when a user is created
+		// Default role USER when a user is created
 		this.roles.add(new Role(ERole.ROLE_USER));
 	}
+
 
 	public User(String username, String email, String password) {
 		this.username = username;
@@ -60,6 +64,7 @@ public class User {
 		this.roles.add(new Role(ERole.ROLE_USER));
 	}
 
+	// Getters and Setters
 	public Long getId() {
 		return id;
 	}
@@ -98,5 +103,30 @@ public class User {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	// Inner class for user update requests
+	@Setter
+	@Getter
+	public static class UserUpdateRequest {
+		// Getters and Setters
+		private String username;
+		private String email;
+
+
+	}
+
+	// Inner class for password update
+	@Setter
+	@Getter
+	public static class PasswordUpdateRequest {
+		// Getters and Setters
+		@NotBlank
+		private String currentPassword;
+
+		@NotBlank
+		@Size(min = 6, max = 40)
+		private String newPassword;
+
 	}
 }

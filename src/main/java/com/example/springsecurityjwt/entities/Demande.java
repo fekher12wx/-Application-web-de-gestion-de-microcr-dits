@@ -13,10 +13,18 @@ public class Demande {
     private Long id;
 
     @Column(nullable = false)
-    private String type;  // ✅ Correct field name
+    private String type;
 
-    private String besoin;  // ✅ Follow Java naming conventions (lowercase)
+    private String besoin;
     private Number montant;
+
+    public enum Status {
+        PENDING, CONFIRMED, REFUSED
+    }
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+    private Long userId;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -26,12 +34,5 @@ public class Demande {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    // ✅ Correct Getter & Setter
-    public String getType() {
-        return type;
-    }
 
-    public void setType(String type) {
-        this.type = type;
-    }
 }
